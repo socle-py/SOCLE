@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 import os
+import subprocess
+import lxc
 import fire
 import yaml, json
 from os.path import expanduser
@@ -48,17 +50,45 @@ class SOCLE(object):
         """Start lxc container with gui
         """
 
-    def create(self,distrib,name):
+    def create(self,dist,release,name):
         """Create lxc container
-        :param distrib: chose the os to install/download
+        :param dist: chose the os to install/download
+        :param release: chose the release to install/download
         :param name: chose the name of os
         """
-        print("create lxc container ",distrib,name)
-        """tydddddpe""" 
+        if name in config["os"].keys():
+            console.print("[red]ERROR container name already used in socleManagement[/red]")
+            quit(1)
+        if name in lxc.list_containers():
+            console.print("[red]ERROR container name already used in lxc[/red]")
+            quit(1)
+        try:
+            with open(os.path.devnull, "w") as devnull:
+                dpkg = subprocess.Popen(['dpkg', '--print-architecture'],
+                                        stderr=devnull, stdout=subprocess.PIPE,
+                                        universal_newlines=True)
+
+                if dpkg.wait() == 0:
+                    arch = dpkg.stdout.read().strip()
+        except:
+            pass
+
+        container=lxc.Container(name)
+        if container.create("download",1,{"dist":dist,"release":release,"arch":arch}) == False:
+            console.print("[red]ERROR container creation[/red]")
+            
+        print("lxc container created ",dist,name)
+        config["os"][name]={}
+        with open(pathFileConf, 'w') as f:
+            json.dump(config, f, ensure_ascii=False)
+
+        
 
     def ls(self):
         """list containers
         """
+        print(lxc.list_containers())
+
     def add(self):
         """Add containers to socle management
         """
