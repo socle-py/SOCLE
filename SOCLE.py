@@ -109,7 +109,7 @@ class SOCLE(object):
             pass
 
         container=lxc.Container(name)
-        if container.create("download",1,{"dist":distrib,"release":release,"arch":arch}) == False:
+        if container.create("download",0,{"dist":distrib,"release":release,"arch":arch}) == False:
             console.print("[red]ERROR container creation[/red]")
             
         print("lxc container created ",distrib,name)
@@ -126,7 +126,7 @@ class SOCLE(object):
         """
         #for key in config["os"].keys:
              
-        os_renderables = [Panel(key+"\n"+lxc.Container(key).state+"\n"+config[nameCategory1][key]["distrib"]+"\n"+config[nameCategory1][key]["release"], title="[bold yellow]LXC[/bold yellow]", style="" , expand=True) for key in config[nameCategory1].keys()]
+        os_renderables = [Panel(key+"\n"+lxc.Container(key).state+"\n"+str(config[nameCategory1][key]["distrib"])+"\n"+str(config[nameCategory1][key]["release"]), title="[bold yellow]LXC[/bold yellow]", style="" , expand=True) for key in config[nameCategory1].keys()]
         console.print(Columns(os_renderables))
         print(lxc.list_containers())
 
