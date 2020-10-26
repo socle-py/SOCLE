@@ -28,7 +28,7 @@ with open(pathFileConf) as f:
     print(config)
 
 #create type if not exist
-for key in 'os','pref':
+for key in nameCategory1,'pref':
     print(key)
     if key not in config.keys():
         config[key]={}
@@ -36,9 +36,9 @@ for key in 'os','pref':
             yaml.dump(config, f, allow_unicode=True)
 
 for att in 'distrib','release':
-    for key in config["os"].keys():
-        if att not in config["os"][key].keys():
-            config["os"][key][att]="null"
+    for key in config[nameCategory1].keys():
+        if att not in config[nameCategory1][key].keys():
+            config[nameCategory1][key][att]="null"
             with open(pathFileConf, 'w') as f:
                 yaml.dump(config, f, allow_unicode=True)
 
@@ -70,7 +70,7 @@ class SOCLE(object):
         :param release: chose the release to install/download
         :param name: chose the name of os
         """
-        if name in config["os"].keys():
+        if name in config[nameCategory1].keys():
             console.print("[red]ERROR container name already used in socleManagement[/red]")
             quit(1)
         if name in lxc.list_containers():
@@ -92,9 +92,9 @@ class SOCLE(object):
             console.print("[red]ERROR container creation[/red]")
             
         print("lxc container created ",distrib,name)
-        config["os"][name]={}
-        config["os"][name]["distrib"]=distrib
-        config["os"][name]["release"]=release
+        config[nameCategory1][name]={}
+        config[nameCategory1][name]["distrib"]=distrib
+        config[nameCategory1][name]["release"]=release
 
         with open(pathFileConf, 'w') as f:
             yaml.dump(config, f, allow_unicode=True)
@@ -105,7 +105,7 @@ class SOCLE(object):
         """
         #for key in config["os"].keys:
              
-        os_renderables = [Panel(key+"\n"+lxc.Container(key).state+"\n"+config["os"][key]["distrib"]+"\n"+config["os"][key]["release"], style="red on blue" , expand=True) for key in config["os"].keys()]
+        os_renderables = [Panel(key+"\n"+lxc.Container(key).state+"\n"+config[nameCategory1][key][nameCategory1]+"\n"+config[nameCategory1][key]["release"], style="red on blue" , expand=True) for key in config[nameCategory1].keys()]
         console.print(Columns(os_renderables))
         console.print(Columns(os_renderables))
         print(lxc.list_containers())
@@ -113,7 +113,7 @@ class SOCLE(object):
     def add(self,name):
         """Add containers to socle management
         """
-        if name in config["os"].keys():
+        if name in config[nameCategory1].keys():
             console.print("[red]ERROR container already managed by socle[/red]")
             quit(1)
 
@@ -121,7 +121,7 @@ class SOCLE(object):
             console.print("[red]ERROR container not present  in lxc[/red]")
             quit(1)
         
-        config["os"][name]={}
+        config[nameCategory1][name]={}
         with open(pathFileConf, 'w') as f:
             yaml.dump(config, f, allow_unicode=True)
         
