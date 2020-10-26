@@ -2,7 +2,7 @@
 
 import os
 import subprocess
-import lxc
+#import lxc
 import fire
 import yaml, json
 from os.path import expanduser
