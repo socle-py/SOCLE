@@ -106,7 +106,8 @@ class SOCLE(object):
         """
         #for key in config["os"].keys:
              
-        os_renderables = [Panel(key+"\n"+lxc.Container(key).state+"\n"+config[nameCategory1][key]["distrib"]+"\n"+config[nameCategory1][key]["release"], style="" , expand=True) for key in config[nameCategory1].keys()]
+        os_renderables = [Panel(key+"\n"+lxc.Container(key).state+"\n"+config[nameCategory1][key]["distrib"]+"\n"+config[nameCategory1][key]["release"], title="LXC", style="red on blue" , expand=True) for key in config[nameCategory1].keys()]
+        console.print(Columns(os_renderables))
         console.print(Columns(os_renderables))
         print(lxc.list_containers())
 
