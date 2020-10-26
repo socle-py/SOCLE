@@ -78,7 +78,7 @@ class SOCLE(object):
             console.print("[red]ERROR container name not exist in socleManagement[/red]")
             quit(1)
         
-        lxc.Container(name).attach_wait(lxc.attach_run_command,["su", "-c", "DISPLAY=:2 i3", "root"])
+        lxc.Container(name).attach_wait(lxc.attach_run_command,["sudo", "-H", "-u", "root", "bash", "-c", "DISPLAY=:2 i3"])
 
 
     def startUi(self,name):
