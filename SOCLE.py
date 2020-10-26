@@ -61,8 +61,21 @@ console.print(title, style="red", justify="center")
 
 class SOCLE(object):
     """A simple calculator class."""
-    def start(self,distrib,name):
+    def start(self,name):
+        """Start lxc container
+        """
+        if name not in config[nameCategory1].keys():
+            console.print("[red]ERROR container name not exist in socleManagement[/red]")
+            quit(1)
+
+        lxc.Container(name).start()
+
+
+    def startGui(self,name):
         """Start lxc container with gui
+        """
+    def startUi(self,name):
+        """Start lxc container with command
         """
 
     def create(self,distrib,release,name):
