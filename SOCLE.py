@@ -15,10 +15,10 @@ from rich.columns import Columns
 
 
 nameCategory1="lxc"
-config={}
 #create socle conf yaml if not exist
 pathFileConf=expanduser("~")+'/.socle.conf'
 if not os.path.exists(pathFileConf):
+    config={}
     with open(pathFileConf, 'w') as f:
         yaml.dump(config, f, allow_unicode=True)
 
@@ -26,6 +26,7 @@ if not os.path.exists(pathFileConf):
 with open(pathFileConf) as f:
     config=yaml.load(f,Loader=yaml.FullLoader)
     print(config)
+
 
 #create type if not exist
 for key in nameCategory1,'pref':
@@ -42,7 +43,7 @@ for att in 'distrib','release':
             with open(pathFileConf, 'w') as f:
                 yaml.dump(config, f, allow_unicode=True)
 
-   
+  
 
 #Display title
 title="""
@@ -105,13 +106,12 @@ class SOCLE(object):
         """
         #for key in config["os"].keys:
              
-        os_renderables = [Panel(key+"\n"+lxc.Container(key).state+"\n"+config[nameCategory1][key][nameCategory1]+"\n"+config[nameCategory1][key]["release"], style="red on blue" , expand=True) for key in config[nameCategory1].keys()]
-        console.print(Columns(os_renderables))
+        os_renderables = [Panel(key+"\n"+lxc.Container(key).state+"\n"+config[nameCategory1][key]["distrib"]+"\n"+config[nameCategory1][key]["release"], style="" , expand=True) for key in config[nameCategory1].keys()]
         console.print(Columns(os_renderables))
         print(lxc.list_containers())
 
     def add(self,name):
-        """Add containers to socle management
+        """Add containers lxc to socle management
         """
         if name in config[nameCategory1].keys():
             console.print("[red]ERROR container already managed by socle[/red]")
