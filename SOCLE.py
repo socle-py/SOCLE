@@ -74,6 +74,13 @@ class SOCLE(object):
     def startGui(self,name):
         """Start lxc container with gui
         """
+        if name not in config[nameCategory1].keys():
+            console.print("[red]ERROR container name not exist in socleManagement[/red]")
+            quit(1)
+        
+        lxc.Container(name).attach_wait(lxc.attach_run_command,["bash", "-c", "DISPLAY=:2 i3"])
+
+
     def startUi(self,name):
         """Start lxc container with command
         """
