@@ -1,3 +1,4 @@
+rich
 fire
 PyYAML
 #python-lxc (apt install python-lxc)
