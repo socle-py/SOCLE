@@ -100,7 +100,7 @@ class SOCLE(object):
         
         display=os.environ['DISPLAY']
         lxc.Container(name).start()
-        lxc.Container(name).attach_wait(lxc.attach_run_command,["sudo", "-H", "-u", "root", "bash", "-c", "DISPLAY=:"+int(display)+" i3"])
+        lxc.Container(name).attach_wait(lxc.attach_run_command,["sudo", "-H", "-u", "root", "bash", "-c", "DISPLAY="+display+" i3"])
 
 
     def ui(self,name):
