@@ -70,7 +70,16 @@ class SOCLE(object):
 
         lxc.Container(name).start()
 
-    def start(self,name):
+    def stop(self,name):
+        """Stop lxc container
+        """
+        if name not in config[nameCategory1].keys():
+            console.print("[red]ERROR container name not exist in socleManagement[/red]")
+            quit(1)
+            
+        lxc.Container(name).stop()
+        
+        
 
     def gui(self,name,prog):
         """Start lxc container with gui
@@ -88,6 +97,11 @@ class SOCLE(object):
     def ui(self,name):
         """Start lxc container with ui console
         """
+        if name not in config[nameCategory1].keys():
+            console.print("[red]ERROR container name not exist in socleManagement[/red]")
+            quit(1)
+       
+        
     
     
 
