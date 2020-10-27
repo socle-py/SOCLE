@@ -36,7 +36,7 @@ for key in nameCategory1,'pref':
         with open(pathFileConf, 'w') as f:
             yaml.dump(config, f, allow_unicode=True)
 
-for att in 'distrib','release','defaultWM':
+for att in 'distrib','release','defaultWM',"defaultUser":
     for key in config[nameCategory1].keys():
         if att not in config[nameCategory1][key].keys():
             config[nameCategory1][key][att]="null"
@@ -90,17 +90,32 @@ class SOCLE(object):
         lxc.Container(name).stop()
         
         
-    def gui(self,name,prog=""):
+    def gui(self,name,prog="",user=""):
         """Start lxc container with gui
         :param name: chose the name of os
         :param prog: OPTIONAL chose the name of wm
         """
         verifyNameExistInCategory(name,nameCategory1)
         verifyInX()
+
+        if prog == "":
+            if config[nameCategory1][key]["defaultWM"] != "":
+                prog=config[nameCategory1][key]["defaultWM"]
+            else:
+                prog="i3"
+
+        if user == "":
+            if config[nameCategory1][key]["defaultUser"] != "":
+                prog=config[nameCategory1][key]["defaultUser"]
+            else:
+                user="root"
+
+        
+
         
         display=os.environ['DISPLAY']
         lxc.Container(name).start()
-        lxc.Container(name).attach_wait(lxc.attach_run_command,["sudo", "-H", "-u", "root", "bash", "-c", "DISPLAY="+display+" i3"])
+        lxc.Container(name).attach_wait(lxc.attach_run_command,["sudo", "-H", "-u", user, "bash", "-c", "DISPLAY="+display+" "+prog])
 
 
     def ui(self,name):
