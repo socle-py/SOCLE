@@ -36,7 +36,7 @@ for key in nameCategory1,'pref':
         with open(pathFileConf, 'w') as f:
             yaml.dump(config, f, allow_unicode=True)
 
-for att in 'distrib','release':
+for att in 'distrib','release','defaultWM':
     for key in config[nameCategory1].keys():
         if att not in config[nameCategory1][key].keys():
             config[nameCategory1][key][att]="null"
@@ -71,7 +71,7 @@ def verifyNameNotExistInCategory(name,nameCategory):
         quit(1)
 
 def verifyInX():
-    if os.environ['DISPLAY'] == null :
+    if 'DISPLAY' not in os.environ.keys() :
         console.print("[red]ERROR display not found, please execute in X (startx)[/red]")
         quit(1)
     
