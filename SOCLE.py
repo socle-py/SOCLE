@@ -90,8 +90,9 @@ class SOCLE(object):
             console.print("[red]ERROR container name not exist in socleManagement[/red]")
             quit(1)
         
-        
-        lxc.Container(name).attach_wait(lxc.attach_run_command,["sudo", "-H", "-u", "root", "bash", "-c", "DISPLAY=:2 i3"])
+        display=os.environ['DISPLAY']
+        lxc.Container(name).start()
+        lxc.Container(name).attach_wait(lxc.attach_run_command,["sudo", "-H", "-u", "root", "bash", "-c", "DISPLAY=:"+display+" i3"])
 
 
     def ui(self,name):
@@ -102,7 +103,8 @@ class SOCLE(object):
             quit(1)
        
         
-    
+       lxc.Container(name).start()
+       #attach command to tty
     
 
     def create(self,distrib,release,name):
