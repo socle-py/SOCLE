@@ -69,6 +69,11 @@ def verifyNameNotExistInCategory(name,nameCategory):
     if name in config[nameCategory].keys():
         console.print("[red]ERROR container name already exist in socleManagement[/red]")
         quit(1)
+
+def verifyInX():
+    if os.environ['DISPLAY'] == null :
+        console.print("[red]ERROR display not found, please execute in X (startx)[/red]")
+        quit(1)
     
 class SOCLE(object):
     """A simple calculator class."""
@@ -85,12 +90,13 @@ class SOCLE(object):
         lxc.Container(name).stop()
         
         
-    def gui(self,name,prog):
+    def gui(self,name,prog=config[nameCategory1][key]["wm"]):
         """Start lxc container with gui
         :param name: chose the name of os
         :param prog: OPTIONAL chose the name of wm
         """
         verifyNameExistInCategory(name,nameCategory1)
+        verifyInX()
         
         display=os.environ['DISPLAY']
         lxc.Container(name).start()
@@ -129,6 +135,7 @@ class SOCLE(object):
             pass
 
         container=lxc.Container(name)
+        # ! Condition a revoir ne marche pas
         if container.create("download",0,{"dist":distrib,"release":release,"arch":arch}) == False:
             console.print("[red]ERROR container creation[/red]")
             
