@@ -39,7 +39,7 @@ for key in nameCategory1,'pref':
 for att in 'distrib','release','defaultWM',"defaultUser":
     for key in config[nameCategory1].keys():
         if att not in config[nameCategory1][key].keys():
-            config[nameCategory1][key][att]="null"
+            config[nameCategory1][key][att]=""
             with open(pathFileConf, 'w') as f:
                 yaml.dump(config, f, allow_unicode=True)
 
