@@ -59,36 +59,38 @@ title="""
 console = Console()
 console.print(title, style="red", justify="center")
 
+
+def verifyNameExistInCategory(name,nameCategory):
+    if name not in config[nameCategory].keys():
+        console.print("[red]ERROR container name not exist in socleManagement[/red]")
+        quit(1)
+        
+def verifyNameNotExistInCategory(name,nameCategory):
+    if name in config[nameCategory].keys():
+        console.print("[red]ERROR container name already exist in socleManagement[/red]")
+        quit(1)
+    
 class SOCLE(object):
     """A simple calculator class."""
     def start(self,name):
         """Start lxc container
         """
-        if name not in config[nameCategory1].keys():
-            console.print("[red]ERROR container name not exist in socleManagement[/red]")
-            quit(1)
-
+        verifyNameExistInCategory(name,nameCategory1)
         lxc.Container(name).start()
 
     def stop(self,name):
         """Stop lxc container
         """
-        if name not in config[nameCategory1].keys():
-            console.print("[red]ERROR container name not exist in socleManagement[/red]")
-            quit(1)
-            
+        verifyNameExistInCategory(name,nameCategory1)      
         lxc.Container(name).stop()
         
         
-
     def gui(self,name,prog):
         """Start lxc container with gui
         :param name: chose the name of os
         :param prog: OPTIONAL chose the name of wm
         """
-        if name not in config[nameCategory1].keys():
-            console.print("[red]ERROR container name not exist in socleManagement[/red]")
-            quit(1)
+        verifyNameExistInCategory(name,nameCategory1)
         
         display=os.environ['DISPLAY']
         lxc.Container(name).start()
@@ -98,13 +100,10 @@ class SOCLE(object):
     def ui(self,name):
         """Start lxc container with ui console
         """
-        if name not in config[nameCategory1].keys():
-            console.print("[red]ERROR container name not exist in socleManagement[/red]")
-            quit(1)
-       
+        verifyNameExistInCategory(name,nameCategory1)
         
-       lxc.Container(name).start()
-       #attach command to tty
+        lxc.Container(name).start()
+        #attach command to tty
     
 
     def create(self,distrib,release,name):
@@ -113,9 +112,8 @@ class SOCLE(object):
         :param release: chose the release to install/download
         :param name: chose the name of os
         """
-        if name in config[nameCategory1].keys():
-            console.print("[red]ERROR container name already used in socleManagement[/red]")
-            quit(1)
+        verifyNameNotExistInCategory(name,nameCategory1)
+        
         if name in lxc.list_containers():
             console.print("[red]ERROR container name already used in lxc[/red]")
             quit(1)
@@ -155,9 +153,7 @@ class SOCLE(object):
     def add(self,name):
         """Add containers lxc to socle management
         """
-        if name in config[nameCategory1].keys():
-            console.print("[red]ERROR container already managed by socle[/red]")
-            quit(1)
+        verifyNameNotExistInCategory(name,nameCategory1)
 
         if name not in lxc.list_containers():
             console.print("[red]ERROR container not present  in lxc[/red]")
