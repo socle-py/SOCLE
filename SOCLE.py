@@ -114,7 +114,8 @@ class SOCLE(object):
 
         
         display=os.environ['DISPLAY']
-        lxc.Container(name).start()
+        lxc.Container(name).start() 
+        # ! Probleme avec les users pb xauth denied screen
         lxc.Container(name).attach_wait(lxc.attach_run_command,["sudo", "-H", "-u", user, "bash", "-c", "DISPLAY="+display+" "+prog])
 
 
