@@ -90,7 +90,7 @@ class SOCLE(object):
         lxc.Container(name).stop()
         
         
-    def gui(self,name,prog=null):
+    def gui(self,name,prog=Null):
         """Start lxc container with gui
         :param name: chose the name of os
         :param prog: OPTIONAL chose the name of wm
