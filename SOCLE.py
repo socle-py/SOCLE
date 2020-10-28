@@ -91,6 +91,7 @@ class SOCLE(object):
         
         
     def gui(self,name,prog="",user=""):
+        # * piste pour executer client x sur un container
         """Start lxc container with gui
         :param name: chose the name of os
         :param prog: OPTIONAL chose the name of wm
