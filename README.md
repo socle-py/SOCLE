@@ -1,5 +1,5 @@
 # SOCLE
-**S**ystems **o**n **C**ontainers with **L**ightweight **E**nvironment
+**S**ystems **O**n **C**ontainers with **L**ightweight **E**nvironment
 
 **SOCLE** is a python script to execute facilement des distributions linux dans des containers dockers,
 au lieu d'avoir
