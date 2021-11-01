@@ -156,7 +156,7 @@ def create(choice,*name):
 	console = Console()
 	#with console.status(' '.join(map(str, sys.argv))+"...") as status:
 	for i in name:
-		execute(doc[choice].replace("$NAME",i), "create container")
+		execute(userContainers[choice].replace("$NAME",i), "create container")
 	exit()
 
 def x(container):
@@ -211,11 +211,23 @@ def tui_all():
 
 
 #MAIN
-doc=yaml.load(open('/home/throc/.config/socle.yml', 'r'),Loader=yaml.SafeLoader)
+pathUserContainers=os.path.expanduser('~/.config/socle.yml')
+pathMainContainers=os.path.expanduser('~/.local/share/socle/socle.yml')
+if os.path.isfile(pathUserContainers):
+    userContainers=yaml.load(open(pathUserContainers, 'r'),Loader=yaml.SafeLoader)
+
+if not os.path.isfile(pathMainContainers):
+    os.command("mkdir -p ~/.local/share/socle")
+
+
+if os.path.isfile(pathMainContainers):
+    mainContainers=yaml.load(open(os.path.expanduser('~/.local/share/socle/socle.yml'), 'r'),Loader=yaml.SafeLoader)
 	
 #a={"create":{ } }
 a={}
-for i in doc:
+for i in userContainers:
+	a[i]=None	
+for i in mainContainers:
 	a[i]=None	
 
 glob_output=0

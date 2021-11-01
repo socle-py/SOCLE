@@ -1,0 +1,3 @@
+myFirst: |
+  bash -c 'mkdir -p /tmp/empty ; cd /tmp/empty ; docker build --build-arg NOCACHE=$(date +%s) -t toto/myfirst . -f -<<<$(curl -L  https://gitlab.com/dockerimagesforsocle/imageswithi3/-/raw/main/myFirst.build)  && docker run -d --name $NAME  --privileged -v /var/run/dbus:/var/run/dbus --shm-size=2gb -v /tmp/.X11-unix:/tmp/.X11-unix:ro -v /dev/snd:/dev/snd -v /sys/fs/cgroup:/sys/fs/cgroup:ro    toto/myfirst'
+
