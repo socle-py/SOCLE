@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python3.8
 # -*- coding: utf-8 -*-
 
 
@@ -10,15 +10,20 @@ title="""
 ╚════██║██║   ██║██║     ██║     ██╔══╝[green]TR[/green]
 ███████║╚██████╔╝╚██████╗███████╗███████╗
 ╚══════╝ ╚═════╝  ╚═════╝╚══════╝╚══════╝
-
 """
 
 
 from rich.console import Console
 from rich.panel import Panel
+from rich.align import Align
 from rich.columns import Columns
+from rich.rule import Rule
 from rich.text import Text
 from rich import box
+from rich.console import Group
+from rich import box
+from rich.markdown import Markdown
+
 
 
 import os
@@ -83,8 +88,10 @@ def tui_getcolor(test):
 		return("green")
 
 cmd_get_compatible_containers="docker ps --format '{{ .ID }}' | xargs -I {} docker inspect -f '{{ .Name }}{{ range .Mounts }} {{ .Type }} {{ if eq .Type "+'"bind"'+" }}{{ .Source }}{{ end }}{{ .Name }} => {{ .Destination }}{{ end }}' {} | grep /tmp/.X11-unix | cut -f1 -d' '"
-cmd="docker ps -a --format '{{json  . }}' --no-trunc | grep '/tmp/.X11-unix'"
-cmd_all="docker ps -a --format '{{json  . }}' --no-trunc"
+#cmd="docker ps -a --format '{{json  . }}' --no-trunc | grep '/tmp/.X11-unix'"
+cmd='docker ps -a --format \'{"Names":"{{.Names}}" ,"Mounts":"{{.Mounts}}","Image":"{{.Image}}","Status":"{{.Status}}"}\' --no-trunc | grep \'/tmp/.X11-unix\''
+#cmd_all="docker ps -a --format '{{json  . }}' --no-trunc"
+cmd_all='docker ps -a --format \'{"Names":"{{.Names}}" ,"Mounts":"{{.Mounts}}","Image":"{{.Image}}","Status":"{{.Status}}"}\' --no-trunc '
 	
 def printContainers(all=False):
 	useCmd=cmd
@@ -92,8 +99,6 @@ def printContainers(all=False):
 		useCmd=cmd_all
 
 	console = Console()
-	console.print(title, style="red", justify="center")
-	console.rule("[bold red]Detect compatible containers")
 
 	try:
 		x = subprocess.check_output(useCmd,shell=True)
@@ -101,17 +106,62 @@ def printContainers(all=False):
 	except subprocess.CalledProcessError:
 		console.print(":grinning: pas trouvé")
 		conts =""
-	user_renderables = [Panel(Text.assemble((yaml.load(cont)["Names"]+"\n", "green"),(yaml.load(cont)["Image"]+"\n"),  (yaml.load(cont)["Status"]+"\n", tui_getcolor(yaml.load(cont)["Status"])),(yaml.load(cont)["Mounts"])    ), expand=True, box=box.SQUARE) for cont in conts]
-	console.print(Columns(user_renderables,padding=0))
 
-        
-	with console.capture() as capture:
-		console.print(Columns(user_renderables,padding=0))
-		console.print(title, style="red", justify="center")
-		console.rule("[bold red]Detect compatible containers")
-	nlines = capture.get().count('\n')
-	return(nlines)
-	print(str(nlines))
+	user_renderables = [Panel(Text.assemble((yaml.safe_load(cont)["Names"]+"\n", "green"),(yaml.safe_load(cont)["Image"]+"\n"),  (yaml.safe_load(cont)["Status"]+"\n", tui_getcolor(yaml.safe_load(cont)["Status"])),(yaml.safe_load(cont)["Mounts"])    ), expand=True,) for cont in conts]
+	#user_renderables = "test" 
+	panelTitle=Panel(title, style="red",box=box.SIMPLE)
+	md_help = """
+**get example config**
+
+``` Bash
+cp /usr/local/shares/socle/socle.yml ~/.socle/socle.yml
+```
+
+**updates official templates**
+
+```
+socle.py update templates
+```
+
+**list all templates defined in `~/.config/socle/*.yml`,`/usr/local/shares/socle/socle.yml`**
+
+```
+socle.py list templates
+```
+"""
+	md_help2="""    
+**create container from template**
+
+```
+socle.py create [TEMPLATE_NAME] [NAME]
+```
+
+**start x on compatible container**
+
+```
+socle.py x [CONTAINER_NAME]
+```
+
+More help `socle.py --help`
+"""
+	from rich.table import Table
+
+	panelHelp=Panel(Markdown(md_help),title="[bold white]QuickStart/Help",border_style="green",style="",box=box.SIMPLE)
+	panelHelp2=Panel(Markdown(md_help2),title="",border_style="green",style="",box=box.SIMPLE)
+	header = Table.grid(expand=True)
+	#header.add_row("",panelTitle,style="on black")
+	header.add_row(panelHelp,panelHelp2,style="on #0e1111")
+	compatibleContainers=Panel(Columns(user_renderables,padding=0),title="[bold red]Detect compatible containers",border_style="green",style="on #0e1111")
+	#console.print(Panel(Group(Align(panelTitle,align="center"),panelHelp,compatibleContainers,),box=box.HEAVY_EDGE,border_style="#ffd064"))
+	console.print(Panel(Group(Align(panelTitle,align="center",style="on black"),header,compatibleContainers,),box=box.HEAVY_EDGE,border_style="#ffd064"))
+
+	#with console.capture() as capture:
+	#	console.print(Columns(user_renderables,padding=0))
+	#	console.print(title, style="red", justify="center")
+	#	console.rule("[bold red]Detect compatible containers")
+	#nlines = capture.get().count('\n')
+	#return(nlines)
+	#print(str(nlines))
 
 
 
@@ -149,6 +199,31 @@ def rm(*container,force=False):
 
 
 # possible dexectuer un container directement sur un tty de libre ? peut etre .. besoin detre root de pense
+def list_templates():
+	"""list templates"""
+	#fire.Fire({
+	#	'templates': start,
+	#	'container': stop,
+	#	})
+
+def list_containers(All=False):
+	"""list containers"""
+	printContainers()
+	#fire.Fire({
+	#	'templates': start,
+	#	'container': stop,
+	#	})
+
+def update_templates():
+	"""updates templates"""
+	execute("sudo mkdir -p  /usr/local/share/socle")
+	execute("sudo mkdir -p  /usr/local/share/socle")
+
+def createList():
+        """list template containers"""
+        print(configContainers)
+        exit()
+
 def create(choice,*name):
 	"""create a container"""
         # make option force to delete container present
@@ -156,7 +231,7 @@ def create(choice,*name):
 	console = Console()
 	#with console.status(' '.join(map(str, sys.argv))+"...") as status:
 	for i in name:
-		execute(userContainers[choice].replace("$NAME",i), "create container")
+		execute(configContainers[choice].replace("$NAME",i), "create container")
 	exit()
 
 def x(container):
@@ -201,33 +276,36 @@ def x(container):
 	exit()
 
 def tui_all():
-	tui(all=True)
+	printContainers(all=True)
 
 
 
 # EXECUTE X WINDOW
 
 # SI detection windows manager
-
+mainContainers={}
+userContainers={}
+def ph(path):
+    return os.path.expanduser(path)
 
 #MAIN
 pathUserContainers=os.path.expanduser('~/.config/socle.yml')
 pathMainContainers=os.path.expanduser('~/.local/share/socle/socle.yml')
+
 if os.path.isfile(pathUserContainers):
     userContainers=yaml.load(open(pathUserContainers, 'r'),Loader=yaml.SafeLoader)
 
 if not os.path.isfile(pathMainContainers):
-    os.command("mkdir -p ~/.local/share/socle")
-
+    os.system(ph("mkdir -p ~/.local/share/socle"))
+    os.system(ph("cp ~/.config/socle.yml ~/.local/share/socle/socle.yml"))
 
 if os.path.isfile(pathMainContainers):
-    mainContainers=yaml.load(open(os.path.expanduser('~/.local/share/socle/socle.yml'), 'r'),Loader=yaml.SafeLoader)
-	
+    mainContainers=yaml.load(open(pathMainContainers, 'r'),Loader=yaml.SafeLoader)
+
+configContainers={**userContainers,**mainContainers}
 #a={"create":{ } }
 a={}
-for i in userContainers:
-	a[i]=None	
-for i in mainContainers:
+for i in configContainers:
 	a[i]=None	
 
 glob_output=0
@@ -238,8 +316,10 @@ if len(sys.argv) > 1:
 		'stop': stop,
 		'rm': rm,
 		'create': create,
+		'createList': createList,
 		'x': x,
-		'list': printContainers,
+		'list-templates': list_templates,
+		'list-containers': list_containers,
 		'all': tui_all,
 		})
 elif not os.getenv('SOCLE_cli') is None and not os.getenv('SOCLE_cli') == "" :
