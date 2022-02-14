@@ -1,3 +1,4 @@
+![](https://i.imgur.com/PbtZEzV.png)
 # SOCLE
 **S**ystems **O**n **C**ontainers with **L**ightweight **E**nvironment
 
