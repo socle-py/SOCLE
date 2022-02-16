@@ -111,36 +111,41 @@ def printContainers(all=False):
 	#user_renderables = "test" 
 	panelTitle=Panel(title, style="red",box=box.SIMPLE)
 	md_help = """
-**get example config**
-
-``` Bash
-cp /usr/local/shares/socle/socle.yml ~/.socle/socle.yml
-```
-
-**updates official templates**
+**updates official templates** (*update file `/usr/local/share/socle/socle.yml`*)
 
 ```
-socle.py update templates
+socle.py update-templates
 ```
 
-**list all templates defined in `~/.config/socle/*.yml`,`/usr/local/shares/socle/socle.yml`**
+**list all templates available** (*defined in `~/.config/socle/*.yml`,`/usr/local/share/socle/socle.yml`*)
 
 ```
-socle.py list templates
+socle.py list-templates
 ```
-"""
-	md_help2="""    
+
 **create container from template**
 
 ```
 socle.py create [TEMPLATE_NAME] [NAME]
 ```
 
+"""
+
+	md_help2="""    
+
 **start x on compatible container**
 
 ```
 socle.py x [CONTAINER_NAME]
 ```
+
+**get example config** (*optional if you want custom os*)
+
+``` Bash
+cp /usr/local/share/socle/socle.yml ~/.socle/socle.yml
+```
+
+
 
 More help `socle.py --help`
 """
@@ -201,6 +206,14 @@ def rm(*container,force=False):
 # possible dexectuer un container directement sur un tty de libre ? peut etre .. besoin detre root de pense
 def list_templates():
 	"""list templates"""
+
+	#print(configContainers)
+	user_renderables = [Panel(Text.assemble((cont+"\n", "green"),(configContainers[cont]["description"]["longText"]+"\n")), expand=True) for cont in configContainers]
+	console = Console()
+	console.print(Panel(Columns(user_renderables,padding=0),title="[bold red]ListTemplates",border_style="green",style=""))
+
+
+
 	#fire.Fire({
 	#	'templates': start,
 	#	'container': stop,
@@ -216,8 +229,8 @@ def list_containers(All=False):
 
 def update_templates():
 	"""updates templates"""
-	execute("sudo mkdir -p  /usr/local/share/socle")
-	execute("sudo mkdir -p  /usr/local/share/socle")
+	execute("sudo mkdir -p  /usr/local/share/socle","")
+	execute("sudo curl -Lo /usr/local/share/socle/socle.yml https://raw.githubusercontent.com/thomas10-10/SOCLE/main/socle.yml?token=GHSAT0AAAAAABMZ6KXRG3JCBP44FKUC7RZCYQKYSTQ","")
 
 def createList():
         """list template containers"""
@@ -292,17 +305,20 @@ def ph(path):
 pathUserContainers=os.path.expanduser('~/.config/socle.yml')
 pathMainContainers=os.path.expanduser('~/.local/share/socle/socle.yml')
 
-if os.path.isfile(pathUserContainers):
-    userContainers=yaml.load(open(pathUserContainers, 'r'),Loader=yaml.SafeLoader)
 
-if not os.path.isfile(pathMainContainers):
-    os.system(ph("mkdir -p ~/.local/share/socle"))
-    os.system(ph("cp ~/.config/socle.yml ~/.local/share/socle/socle.yml"))
+configContainers={}
+listConfigFiles=['/usr/local/share/socle/socle.yml','~/.local/share/socle/socle.yml','~/.config/socle.yml']
+for i in listConfigFiles:
+	i=os.path.expanduser(i)
+	if os.path.isfile(i):
+		a=yaml.load(open(i, 'r'),Loader=yaml.SafeLoader)
+		configContainers={**configContainers,**a}
 
-if os.path.isfile(pathMainContainers):
-    mainContainers=yaml.load(open(pathMainContainers, 'r'),Loader=yaml.SafeLoader)
+#if not os.path.isfile(pathMainContainers):
+#    os.system(ph("mkdir -p ~/.local/share/socle"))
+#    os.system(ph("cp ~/.config/socle.yml ~/.local/share/socle/socle.yml"))
 
-configContainers={**userContainers,**mainContainers}
+
 #a={"create":{ } }
 a={}
 for i in configContainers:
@@ -316,11 +332,12 @@ if len(sys.argv) > 1:
 		'stop': stop,
 		'rm': rm,
 		'create': create,
-		'createList': createList,
+		#'createList': createList,
 		'x': x,
+		'update-templates': update_templates,
 		'list-templates': list_templates,
-		'list-containers': list_containers,
-		'all': tui_all,
+		#'list-containers': list_containers, pas encore implémenté
+		#'all': tui_all,
 		})
 elif not os.getenv('SOCLE_cli') is None and not os.getenv('SOCLE_cli') == "" :
 	print(os.getenv('SOCLE_cli'))

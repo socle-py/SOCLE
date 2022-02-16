@@ -1,4 +1,4 @@
-myFirst: 
+i3-101: 
   command: |
     bash -c 'mkdir -p /tmp/empty ; cd /tmp/empty ; docker build --build-arg NOCACHE=$(date +%s) -t toto/myfirst . -f -<<<$(curl -L  \
     https://gitlab.com/containers-for-socle/os/-/raw/main/debian_buster_begin \
@@ -25,12 +25,23 @@ myFirst:
     https://gitlab.com/containers-for-socle/user/-/raw/main/user_end \
     https://gitlab.com/containers-for-socle/os/-/raw/main/debian_buster_end \
     \)  && docker run -d --name $NAME  --privileged -v /var/run/dbus:/var/run/dbus --shm-size=2gb -v /tmp/.X11-unix:/tmp/.X11-unix:ro -v /dev/snd:/dev/snd -v /sys/fs/cgroup:/sys/fs/cgroup:ro    toto/myfirst'
-  description: |
-    **template myFirst**
-    - os: debian buster
-    - wm: i3-gap, status-bar: polybar notification:dunst
-    - term: wezterm
-    - navigator: google-chrome
-    - editor: vim, vscode
-    - chat: mattermost
+  description:
+    name: i3-101
+    longText: debian with i3-gaps, wezterm
+    mainImageUrl: https://i.imgur.com/4t7Bjds.png 
+    tags:
+      os: debian buster
+      wm: i3-gap, 
+      wm-status-bar: polybar 
+      wm-notification: dunst
+      wm-wallpaper: gif-wallpaper
+      term: wezterm
+      navigator: google-chrome
+      editor: vim, vscode
+      ssh_management: starterTree
+      chat: mattermost
+  short-description:
+    shortText: debian with i3-gaps, wezterm
+    mainTags: ["debian","i3-gaps","polybar","chrome","vscode"]
+    
     
