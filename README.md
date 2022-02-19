@@ -20,7 +20,7 @@ curl -L https://raw.githubusercontent.com/socle-py/SOCLE/main/install.sh | bash
 
 ## Usage
 
-**list all templates available*
+**list all templates available** or go https://socle-py.github.io/socle-vitrine/
 
 ```
 socle.py list-templates
