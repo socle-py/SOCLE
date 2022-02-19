@@ -1,17 +1,20 @@
 i3-101: 
   command: |
-    bash -c 'mkdir -p /tmp/empty ; cd /tmp/empty ; docker build --build-arg NOCACHE=$(date +%s) -t toto/myfirst . -f -<<<$(curl -L  \
+    bash -c 'mkdir -p /tmp/empty ; cd /tmp/empty ; docker build --build-arg NOCACHE=$(date +%s) -t thomas10-10/i3-101 . -f -<<<$(curl -L  \
     https://gitlab.com/containers-for-socle/os/-/raw/main/debian_buster_begin \
     https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/basic \
     https://gitlab.com/containers-for-socle/user/-/raw/main/user_begin \
-    https://gitlab.com/containers-for-socle/fonts/-/raw/main/jet-nerd-font
+    https://gitlab.com/containers-for-socle/fonts/-/raw/main/jet-nerd-font \
     https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/gui-tools \
+    https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/brightnessctl \
     https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/i3-gap \
     https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/polybar-buster \
     https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/wezterm-buster \
     https://gitlab.com/containers-for-socle/package/-/raw/main/starship \
-    https://gitlab.com/containers-for-socle/packagefordebian/-/blob/main/google-chrome-last \
-    https://gitlab.com/containers-for-socle/packagefordebian/-/blob/main/vscode-last \
+    https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/thunar \
+    https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/google-chrome-last \
+    https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/capture-tools \
+    https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/vscode-last \
     https://gitlab.com/containers-for-socle/package/-/raw/main/helm \
     https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/lens \
     https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/LSD \
@@ -24,7 +27,7 @@ i3-101:
     https://gitlab.com/containers-for-socle/i3-101/dockerfiles/-/raw/main/config \
     https://gitlab.com/containers-for-socle/user/-/raw/main/user_end \
     https://gitlab.com/containers-for-socle/os/-/raw/main/debian_buster_end \
-    \)  && docker run -d --name $NAME  --privileged -v /var/run/dbus:/var/run/dbus --shm-size=2gb -v /tmp/.X11-unix:/tmp/.X11-unix:ro -v /dev/snd:/dev/snd -v /sys/fs/cgroup:/sys/fs/cgroup:ro    toto/myfirst'
+    )  && docker run -d --name $NAME  --privileged -v /var/run/dbus:/var/run/dbus --shm-size=2gb -v /tmp/.X11-unix:/tmp/.X11-unix:ro -v /dev/snd:/dev/snd -v /sys/fs/cgroup:/sys/fs/cgroup:ro    thomas10-10/i3-101'
   description:
     name: i3-101
     longText: debian with i3-gaps, wezterm
@@ -40,6 +43,7 @@ i3-101:
       editor: vim, vscode
       ssh_management: starterTree
       chat: mattermost
+      maintainer: github.com/thomas10-10
   short-description:
     shortText: debian with i3-gaps, wezterm
     mainTags: ["debian","i3-gaps","polybar","chrome","vscode"]

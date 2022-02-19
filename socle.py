@@ -230,12 +230,8 @@ def list_containers(All=False):
 def update_templates():
 	"""updates templates"""
 	execute("sudo mkdir -p  /usr/local/share/socle","")
-	execute("sudo curl -Lo /usr/local/share/socle/socle.yml https://raw.githubusercontent.com/thomas10-10/SOCLE/main/socle.yml?token=GHSAT0AAAAAABMZ6KXRG3JCBP44FKUC7RZCYQKYSTQ","")
+	execute("sudo curl -Lo /usr/local/share/socle/socle.yml https://raw.githubusercontent.com/thomas1version is version0/SOCLE/main/socle.yml?token=GHSAT0AAAAAABMZ6KXRG3JCBP44FKUC7RZCYQKYSTQ","")
 
-def createList():
-        """list template containers"""
-        print(configContainers)
-        exit()
 
 def create(choice,*name):
 	"""create a container"""
@@ -243,8 +239,12 @@ def create(choice,*name):
 	#print(doc[choice])
 	console = Console()
 	#with console.status(' '.join(map(str, sys.argv))+"...") as status:
+	#if f == "yes":
+	#	for i in name:
+	#		execute("docker rm -f $NAME", "delete existant container")
+	
 	for i in name:
-		execute(configContainers[choice].replace("$NAME",i), "create container")
+		execute(configContainers[choice]["command"].replace("$NAME",i), "create container")
 	exit()
 
 def x(container):
@@ -302,12 +302,10 @@ def ph(path):
     return os.path.expanduser(path)
 
 #MAIN
-pathUserContainers=os.path.expanduser('~/.config/socle.yml')
-pathMainContainers=os.path.expanduser('~/.local/share/socle/socle.yml')
 
 
 configContainers={}
-listConfigFiles=['/usr/local/share/socle/socle.yml','~/.local/share/socle/socle.yml','~/.config/socle.yml']
+listConfigFiles=['/usr/local/share/socle/socle.yml','~/.local/share/socle/socle.yml','~/.config/socle.yml','~/.local/src/socle.git/socle.yml']
 for i in listConfigFiles:
 	i=os.path.expanduser(i)
 	if os.path.isfile(i):

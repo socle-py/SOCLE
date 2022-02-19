@@ -12,9 +12,15 @@ SOCLE is not made for production environments (contrary to the philosophy of 1 p
 - docker
 - curl
 
+## Install
+
+```
+curl -L install.bash | bash
+```
+
 ## Usage
 
-**list all templates available**
+**list all templates available*
 
 ```
 socle.py list-templates
