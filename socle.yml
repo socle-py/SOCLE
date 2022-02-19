@@ -31,7 +31,8 @@ i3-101:
   description:
     name: i3-101
     longText: debian with i3-gaps, wezterm
-    mainImageUrl: https://i.imgur.com/4t7Bjds.png 
+    #mainImageUrl: https://i.imgur.com/4t7Bjds.png
+    mainImageUrl: https://user-images.githubusercontent.com/36126914/154766367-2c3d9c80-3cdc-4790-b15c-7eba5eee9fd2.gif
     tags:
       os: debian buster
       wm: i3-gap, 
