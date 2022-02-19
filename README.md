@@ -15,7 +15,7 @@ SOCLE is not made for production environments (contrary to the philosophy of 1 p
 ## Install
 
 ```
-curl -L install.bash | bash
+curl -L https://raw.githubusercontent.com/socle-py/SOCLE/main/install.sh | bash
 ```
 
 ## Usage
