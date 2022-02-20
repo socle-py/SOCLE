@@ -34,6 +34,8 @@ socle.py create [TEMPLATE_NAME] [NAME]
 
 **start x on compatible container**
 
+go to a clean(without x started) tty (example: ctrl+alt+f3)
+
 ```
 socle.py x [CONTAINER_NAME]
 ```
