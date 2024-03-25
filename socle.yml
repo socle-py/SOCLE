@@ -1,7 +1,7 @@
 i3-101: 
   command: |
     bash -c 'mkdir -p /tmp/empty ; cd /tmp/empty ; docker build --build-arg NOCACHE=$(date +%s) -t thomas10-10/i3-101 . -f -<<<$(curl -L  \
-    https://gitlab.com/containers-for-socle/os/-/raw/main/debian_buster_begin \
+    https://gitlab.com/containers-for-socle/os/-/raw/main/debian_bookworm_begin \
     https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/basic \
     https://gitlab.com/containers-for-socle/user/-/raw/main/user_begin \
     https://gitlab.com/containers-for-socle/fonts/-/raw/main/jet-nerd-font \
@@ -9,7 +9,7 @@ i3-101:
     https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/brightnessctl \
     https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/i3-gap \
     https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/polybar-buster \
-    https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/wezterm-buster \
+    https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/wezterm \
     https://gitlab.com/containers-for-socle/package/-/raw/main/starship \
     https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/thunar \
     https://gitlab.com/containers-for-socle/packagefordebian/-/raw/main/google-chrome-last \
@@ -26,7 +26,7 @@ i3-101:
     https://gitlab.com/containers-for-socle/nocache/-/raw/main/nocache \
     https://gitlab.com/containers-for-socle/i3-101/dockerfiles/-/raw/main/config \
     https://gitlab.com/containers-for-socle/user/-/raw/main/user_end \
-    https://gitlab.com/containers-for-socle/os/-/raw/main/debian_buster_end \
+    https://gitlab.com/containers-for-socle/os/-/raw/main/debian_end \
     )  && docker run -d --name $NAME  --privileged -v /var/run/dbus:/var/run/dbus --shm-size=2gb -v /tmp/.X11-unix:/tmp/.X11-unix:ro -v /dev/snd:/dev/snd -v /sys/fs/cgroup:/sys/fs/cgroup:ro    thomas10-10/i3-101'
   description:
     name: i3-101
@@ -34,7 +34,7 @@ i3-101:
     #mainImageUrl: https://i.imgur.com/4t7Bjds.png
     mainImageUrl: https://user-images.githubusercontent.com/36126914/154766367-2c3d9c80-3cdc-4790-b15c-7eba5eee9fd2.gif
     tags:
-      os: debian buster
+      os: debian bookworm
       wm: i3-gap, 
       wm-status-bar: polybar 
       wm-notification: dunst
